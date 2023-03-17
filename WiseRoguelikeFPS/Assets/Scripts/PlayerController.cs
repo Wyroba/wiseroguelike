@@ -30,11 +30,6 @@ public class PlayerController : MonoBehaviour
 
         transform.Rotate(Vector3.up * mouseX);
         myCameraHead.localRotation = Quaternion.Euler(cameraVerticalRotation, 0f, 0f);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DestroyEnemy();
-        }
     }
 
     private void PlayerMove()
@@ -47,19 +42,5 @@ public class PlayerController : MonoBehaviour
         movement *= speed * Time.deltaTime;
 
         myCharacterController.Move(movement);
-    }
-
-    // This method destroys the enemy object with the "SpawnedEnemy" tag
-    private void DestroyEnemy()
-    {
-        // Find the first game object in the scene with the "SpawnedEnemy" tag
-        GameObject enemy = GameObject.FindWithTag("SpawnedEnemy");
-
-        // If a game object with the "SpawnedEnemy" tag was found, destroy it
-        if (enemy != null)
-        {
-            // Get the Enemy component on the enemy object and call its DestroyEnemy() method
-            enemy.GetComponent<Enemy>().DestroyEnemy();
-        }
     }
 }
