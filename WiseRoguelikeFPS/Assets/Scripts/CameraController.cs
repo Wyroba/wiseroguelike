@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform myPlayerHead;
+    public Transform player;
+    public Vector3 offset;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
-    private void LateUpdate()
+    // Update is called once per frame
+    void Update()
     {
-        transform.SetPositionAndRotation(myPlayerHead.position, myPlayerHead.rotation);
+        transform.position = player.position + offset;
+        transform.rotation = player.rotation;
+
     }
+
 }

@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public float speed = 2f;
     public float gravity = -9.81f;
-
+    private float cameraSens = 10.0f;
     private CharacterController controller;
     private Animator animator;
     private Vector3 velocity;
@@ -19,12 +19,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Move the character
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        Move();
+        Rotate();
 
-        Vector3 movement = transform.forward * vertical + transform.right * horizontal;
-        controller.Move(movement * speed * Time.deltaTime);
+
+        PlayerAnimator();
+        
+
+    }
+
+    private void Move()
+    {
+        float horiz = Input.GetAxis("Horizontal");
+        float vert = Input.GetAxis("Vertical");
+        Vector3 move = (transform.forward * vert + transform.right * horiz) * speed * Time.deltaTime;
 
         // Apply gravity
         bool isGrounded = controller.isGrounded;
@@ -37,8 +45,76 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        animator.SetFloat("Speed", movement.z);
-        
+        controller.Move(move);
+    }
+
+    private void Rotate()
+    {
+        float horizontalSpeed = 1.0f;
+        float verticalSpeed = 1.0f;
+
+        float horiz = horizontalSpeed * Input.GetAxis("Mouse X");
+        float vert = verticalSpeed * Input.GetAxis("Mouse Y");
+
+        transform.Rotate(-vert, horiz, 0);
+
 
     }
+
+    private void PlayerAnimator()
+    {
+        if (Input.GetKey(KeyCode.W) == true)
+        {
+            animator.SetBool("isWalkingForward", true);
+            animator.SetBool("isWalkingBackward", false);
+            animator.SetBool("isWalkingRight", false);
+            animator.SetBool("isWalkingLeft", false);
+
+        }
+        else
+        {
+            animator.SetBool("isWalkingForward", false);
+
+        }
+
+
+        if (Input.GetKey(KeyCode.S) == true)
+        {
+            animator.SetBool("isWalkingBackward", true);
+            animator.SetBool("isWalkingForward", false);
+            animator.SetBool("isWalkingRight", false);
+            animator.SetBool("isWalkingLeft", false);
+        }
+        else
+        {
+            animator.SetBool("isWalkingBackward", false);
+
+        }
+
+        if (Input.GetKey(KeyCode.D) == true)
+        {
+            animator.SetBool("isWalkingRight", true);
+            animator.SetBool("isWalkingForward", false);
+            animator.SetBool("isWalkingBackward", false);
+            animator.SetBool("isWalkingLeft", false);
+
+        }
+        else
+        {
+            animator.SetBool("isWalkingRight", false);
+        }
+
+        if (Input.GetKey(KeyCode.A) == true)
+        {
+            animator.SetBool("isWalkingLeft", true);
+            animator.SetBool("isWalkingForward", false);
+            animator.SetBool("isWalkingBackward", false);
+            animator.SetBool("isWalkingRight", false);
+        }
+        else
+        {
+            animator.SetBool("isWalkingLeft", false);
+        }
+    }
+
 }
