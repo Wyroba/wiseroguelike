@@ -4,43 +4,41 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] public float speed = 2f;
+    public float gravity = -9.81f;
 
-    public float speed = 12f;
-    public float sensitivity = 400f;
-    private float cameraVerticalRotation;
+    private CharacterController controller;
+    private Animator animator;
+    private Vector3 velocity;
 
-    public Transform myCameraHead;
-    public CharacterController myCharacterController;
-    // Start is called before the first frame update
     void Start()
     {
-        
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        PlayerMove();
+        // Move the character
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * sensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity * Time.deltaTime;
+        Vector3 movement = transform.forward * vertical + transform.right * horizontal;
+        controller.Move(movement * speed * Time.deltaTime);
 
-        cameraVerticalRotation -= mouseY;
-        cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90, 90);
+        // Apply gravity
+        bool isGrounded = controller.isGrounded;
 
-        transform.Rotate(Vector3.up * mouseX);
-        myCameraHead.localRotation = Quaternion.Euler(cameraVerticalRotation, 0f, 0f);
-    }
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
 
-    private void PlayerMove()
-    {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
 
-        Vector3 movement = x * transform.right + z *transform.forward;
+        animator.SetFloat("Speed", movement.z);
+        
 
-        movement *= speed * Time.deltaTime;
-
-        myCharacterController.Move(movement);
     }
 }
