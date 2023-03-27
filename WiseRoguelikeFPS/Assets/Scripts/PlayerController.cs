@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         float horiz = horizontalSpeed * Input.GetAxis("Mouse X");
         float vert = verticalSpeed * Input.GetAxis("Mouse Y");
 
-        transform.Rotate(-vert, horiz, 0);
+        transform.Rotate(0, horiz, 0);
 
 
     }
