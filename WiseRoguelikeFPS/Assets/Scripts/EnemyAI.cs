@@ -22,6 +22,8 @@ public class EnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Find the target object by name
+        target = GameObject.Find("Player").transform;
         // Get the NavMeshAgent component attached to this GameObject
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
@@ -53,7 +55,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     // Engage the target by either chasing it or attacking it, depending on the distance to the target
-    private void EngageTarget()
+    public void EngageTarget()
     {
         // If the enemy is not close enough to attack, chase the target
         if (distanceTotarget >= navMeshAgent.stoppingDistance)

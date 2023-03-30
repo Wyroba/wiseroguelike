@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     // The prefab of the enemy object to spawn
-    public GameObject enemy;
+    [SerializeField] public GameObject enemy;
 
     // The offset in the upward direction for the spawned enemy
     public float spawnOffset = 1f;
@@ -16,12 +16,6 @@ public class EnemySpawner : MonoBehaviour
     // Flag to check if the spawner is waiting for the delay to end
     private bool waitingForDelay = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Spawn an enemy object when the script starts
-        SpawnEnemy();
-    }
 
     // Update is called once per frame
     void Update()
